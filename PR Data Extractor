@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PR Dashboard</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #333; color: white; }
+    </style>
+</head>
+<body>
+
+<h2>GitHub PR Dashboard</h2>
+<table id="prTable">
+    <thead>
+        <tr>
+            <th>PR</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Author</th>
+            <th>Assignees</th>
+            <th>Reviewers</th>
+            <th>Reviews</th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+fetch("https://localhost:5001/api/prdashboard")
+.then(res => res.json())
+.then(data => {
+    const tbody = document.querySelector("tbody");
+
+    data.forEach(pr => {
+        const row = `<tr>
+            <td>${pr.prNumber}</td>
+            <td>${pr.title}</td>
+            <td>${pr.status}</td>
+            <td>${pr.author}</td>
+            <td>${pr.assignees.join(", ")}</td>
+            <td>${pr.reviewers.join(", ")}</td>
+            <td>${pr.totalReviews}</td>
+            <td>${pr.reviewComments}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+});
+</script>
+
+</body>
+</html>
